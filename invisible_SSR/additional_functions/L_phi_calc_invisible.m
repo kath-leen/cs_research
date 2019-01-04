@@ -18,6 +18,7 @@ b = get_distance(receiver, ssr);
 
 %% initial values for the main cycle below
 
+% all lengths are unknown a priori
 t_1030 = [];
 amp_1030 = [];
 t_1090 = [];
@@ -91,13 +92,16 @@ end
 %% the additional cycle for the Control System in case the SSR parameters will be analysed based on the N antenna rotations
 
 angle = angle - 2*pi;
+count = 0;
+
+% all lengths are unknown a priori
 t_1030_long = [t_1030];
 amp_1030_long = [amp_1030];
 t_1090_long = [t_1090];
 amp_1090_long = [amp_1090];
 t_1090_ref_long = [t_1090_ref];
 amp_1090_ref_long = [amp_1090_ref];
-count = 0;
+
 while (count < (N - 1))
     angle_to_compare = rem(angle + 4*pi, 2*pi);
     if (angle_to_compare >= (beta - theta/2)) && (angle_to_compare <= (beta + theta/2))
@@ -143,11 +147,11 @@ reference_aircraft(2) = reference_aircraft(2) + randn()*reference_aircraft_error
 delta_t_1090 = [t_1090_long(2:end) - t_1090_long(1:end-1)];
 delta_t_1090_ref = [t_1090_ref_long(2:end) - t_1090_ref_long(1:end-1)];
 if isCalculatedTs
-    [max_meaning, max_index] = max(delta_t_1090);
-    [min_meaning, min_index] = min(delta_t_1090);
+    [max_meaning, ~] = max(delta_t_1090);
+    [min_meaning, ~] = min(delta_t_1090);
     threshold = (max_meaning - min_meaning) / 2;
-    [max_meaning, max_index] = max(delta_t_1090_ref);
-    [min_meaning, min_index] = min(delta_t_1090_ref);
+    [max_meaning, ~] = max(delta_t_1090_ref);
+    [min_meaning, ~] = min(delta_t_1090_ref);
     threshold_ref = (max_meaning - min_meaning) / 2;
 
     Ts_hypothetical = [delta_t_1090(delta_t_1090 < threshold) delta_t_1090_ref(delta_t_1090_ref < threshold_ref)];

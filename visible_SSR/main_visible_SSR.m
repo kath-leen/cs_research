@@ -75,15 +75,19 @@ t_errors = struct('requests_on_receiver', 0, 'requests_on_aircraft', 0, 'answers
 %% collect statistics and find errors for monostatic SSR different types of bistatic SSR and the Control System
 
 disp(['----- Start main cycle -----']);
+lms_bistatic_ssr = cell(1, length(SNR));
+lms_bistatic_ssr_no_Ts = cell(1, length(SNR));
+lms_control_system_N = cell(1, length(SNR));
+lms_mssr = cell(1, length(SNR));
 for isnr = 1 : length(SNR)
     disp(' ')
     disp(['----- SNR is ' num2str(SNR(isnr)) ' -----']);
     
     % Initialize vectors to collect statistics
-    lms_BSSR_known_Ts = [];
-    lms_BSSR_calculated_Ts = [];
-    lms_MSSR = [];
-    lms_control_system = [];
+    lms_BSSR_known_Ts = zeros(1, length(x_aircraft));
+    lms_BSSR_calculated_Ts = zeros(1, length(x_aircraft));
+    lms_MSSR = zeros(1, length(x_aircraft));
+    lms_control_system = zeros(1, length(x_aircraft));
     
     % Varying aricraft position
     for iPhi = 1 : length(x_aircraft)
@@ -92,7 +96,7 @@ for isnr = 1 : length(SNR)
         b = get_distance(receiver, ssr);
         
         % Initialize vectors which contains errors in aircraft position
-        % determination
+        % determination; the length is unknown a priori
         error_R_BSSR_known_Ts = [];
         error_R_BSSR_calculated_Ts = [];
         error_R_MSSR = [];
@@ -160,10 +164,10 @@ for isnr = 1 : length(SNR)
         end
         
         % Save LMS of errors
-        lms_BSSR_calculated_Ts = [lms_BSSR_calculated_Ts sqrt((mean((error_R_BSSR_calculated_Ts - mean(error_R_BSSR_calculated_Ts)).^2)))];
-        lms_BSSR_known_Ts = [lms_BSSR_known_Ts sqrt((mean((error_R_BSSR_known_Ts - mean(error_R_BSSR_known_Ts)).^2)))];
-        lms_MSSR = [lms_MSSR sqrt((mean((error_R_MSSR - mean(error_R_MSSR)).^2)))];
-        lms_control_system = [lms_control_system sqrt((mean((error_R_control_system - mean(error_R_control_system)).^2)))];
+        lms_BSSR_calculated_Ts(iPhi) = sqrt((mean((error_R_BSSR_calculated_Ts - mean(error_R_BSSR_calculated_Ts)).^2)));
+        lms_BSSR_known_Ts(iPhi) = sqrt((mean((error_R_BSSR_known_Ts - mean(error_R_BSSR_known_Ts)).^2)));
+        lms_MSSR(iPhi) = sqrt((mean((error_R_MSSR - mean(error_R_MSSR)).^2)));
+        lms_control_system(iPhi) = sqrt((mean((error_R_control_system - mean(error_R_control_system)).^2)));
     end
     
     % Form structures with all necessary results

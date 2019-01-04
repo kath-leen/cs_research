@@ -14,6 +14,7 @@ beta = 20*pi/180; %start position of SSR antenna, rad (beta is the angle between
 
 %% initial values for the main cycle below
 
+% all lengths are unknown a priori
 t_1030 = [];
 amp_1030 = [];
 t_1090 = [];
@@ -111,9 +112,9 @@ end
 
 if flags.isMonostatic
     phi = (max(amp_1090) + min(amp_1090))/2;
-    all_deltas = [];
+    all_deltas = zeros(1, length(t_1090));
     for i = 1 : length(t_1090)
-        all_deltas = [all_deltas min(abs(all_t_1030_for_SSR - t_1090(1)))- t_processing];
+        all_deltas(i) = min(abs(all_t_1030_for_SSR - t_1090(1)))- t_processing;
     end
     L = physconst('LightSpeed')*mean(all_deltas);
     return;
@@ -169,14 +170,14 @@ if t_1030(max_index) > t_1090(maxindans) % all first request package TOA are hig
 elseif (t_1030(max_index + 1) < t_1090(maxindans)) % all second request package TOA are lower that t_1090(maxindans)
     L = physconst('LightSpeed') * (min(abs(t_1030-t_1090(maxindans))) - t_processing);
 elseif ((t_1090(maxindans) - t_1030(max_index)) < (t_1030(max_index + 1)- t_1090(maxindans)))  % t_1090(maxindans) is between two request packages and closer to the first request package than to the second one
-    t_1030_first_package = t_1030(1 : max_index);
+    t_1030_first_package = t_1030(1 : max_index); % the final length is unknown a priori
     % interpolate request signals TOA
     while (t_1030_first_package(end) < t_1090(maxindans))
         t_1030_first_package = [t_1030_first_package t_1030_first_package(end) + Ts_experimental];
     end
     L = physconst('LightSpeed') * (t_1090(maxindans) - t_1030_first_package(end - 1) - t_processing);
 else   % t_1090(maxindans) is between two request packages and closer to the second request package than to the first one
-    t_1030_second_package = t_1030(max_index + 1 : end);
+    t_1030_second_package = t_1030(max_index + 1 : end); % the final length is unknown a priori
     % interpolate request signals TOA
     while (t_1030_second_package(1) > t_1090(maxindans))
         t_1030_second_package = [t_1030_second_package(1) - Ts_experimental t_1030_second_package];

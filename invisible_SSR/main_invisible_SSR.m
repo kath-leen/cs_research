@@ -84,20 +84,20 @@ for current_ref_aircraft_LMS = reference_aircraft_LMS
     disp('--------------------------------------------------------')
     disp(['----- Control System, reference aircraft LMS is ' num2str(current_ref_aircraft_LMS) ' -----']);
     disp('--------------------------------------------------------')
-    all_errors_lms = [];
-    all_errors_mean = [];
+    all_errors_lms = cell(1, length(SNR));
+    all_errors_mean = cell(1, length(SNR));
     for isnr = 1 : length(SNR)
         disp(' ')
         disp(['----- SNR is ' num2str(SNR(isnr)) ' -----']);
-        r_error_lms = [];
-        r_error_mean = [];
+        r_error_lms = zeros(1, length(x_aircraft));
+        r_error_mean = zeros(1, length(x_aircraft));
         for iPhi = 1 : length(x_aircraft)
             disp(['----- phi = ' num2str(phi_real(iPhi)) ' radians -----']);
             
             aircraft = [x_aircraft(iPhi) y_aircraft(iPhi) h_aircraft(1)];
             b = get_distance(receiver, ssr);
 
-            error_R = []; % initialize vector which contains errors in aircraft position determination
+            error_R = []; % initialize vector which contains errors in aircraft position determination (the length is unknown a priori)
 
             % Calculation of all TOA errors according to distances, types of 
             % signals, signals' power and SNR
@@ -127,8 +127,8 @@ for current_ref_aircraft_LMS = reference_aircraft_LMS
 
                 error_R = [error_R; sqrt((aircraft(1) - x)^2 + (aircraft(2) - y)^2)];
             end
-            r_error_lms = [r_error_lms sqrt(mean((error_R - mean(error_R)).^2))];
-            r_error_mean = [r_error_mean mean(error_R)];
+            r_error_lms(iPhi) = sqrt(mean((error_R - mean(error_R)).^2));
+            r_error_mean(iPhi) = mean(error_R);
         end
         all_errors_lms{isnr} = r_error_lms;
         all_errors_mean{isnr} = r_error_mean;
