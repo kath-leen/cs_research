@@ -1,0 +1,1 @@
+This model describes the situation when the request signals of the SSR system radar are directly available on the receiver of the Control System. Here accuracies of the Control System and correspondinng SSR system (monostatic and bistatic) are examined.
