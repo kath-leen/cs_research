@@ -34,15 +34,15 @@ angle = -beta; %antenna rotaton angle
 %% distances initial calculation
 
 r_receiver_ssr = get_distance(ssr, receiver);
-r_receiver_ssr_prj = sqrt(((receiver(1) - ssr(1))^2 + (receiver(2) - ssr(2))^2));
+r_receiver_ssr_prj = get_distance(ssr(1:2), receiver(1:2)); %projection
 r_receiver_aircraft = get_distance(receiver, aircraft);
-r_receiver_aircraft_prj = sqrt(((receiver(1) - aircraft(1))^2 + (receiver(2) - aircraft(2))^2));
+r_receiver_aircraft_prj = get_distance(receiver(1:2), aircraft(1:2)); %projection
 r_aircraft_ssr = get_distance(aircraft, ssr);
-r_aircraft_ssr_prj = sqrt(((aircraft(1) - ssr(1))^2 + (aircraft(2) - ssr(2))^2));
+r_aircraft_ssr_prj = get_distance(aircraft(1:2), ssr(1:2)); %projection
 r_receiver_aircraft_ref = get_distance(receiver, reference_aircraft);
-r_receiver_aircraft_ref_prj = sqrt(((receiver(1) - reference_aircraft(1))^2 + (receiver(2) - reference_aircraft(2))^2));
+r_receiver_aircraft_ref_prj = get_distance(receiver(1:2), reference_aircraft(1:2)); %projection
 r_aircraft_ref_ssr = get_distance(reference_aircraft, ssr);
-r_aircraft_ref_ssr_prj = sqrt(((reference_aircraft(1) - ssr(1))^2 + (reference_aircraft(2) - ssr(2))^2));
+r_aircraft_ref_ssr_prj = get_distance(reference_aircraft(1:2), ssr(1:2)); %projection
 
 % alpha correction
 alpha = acos((r_aircraft_ssr_prj^2 + r_receiver_ssr_prj^2 - r_receiver_aircraft_prj^2) / (2*r_aircraft_ssr_prj*r_receiver_ssr_prj));

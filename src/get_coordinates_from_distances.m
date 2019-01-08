@@ -16,13 +16,11 @@ if length(x) == 1
 elseif length(x) == 2
     
     if nargin < 5
-        point_a_desired_3d = [0, 0, 0];
-    else
-        point_a_desired_3d = [point_a_desired 0];
+        point_a_desired = [0, 0];
     end
     
-    err1 = get_distance(point_a_desired_3d, [x(1) y(1) 0]);
-    err2 = get_distance(point_a_desired_3d, [x(2) y(2) 0]);
+    err1 = get_distance(point_a_desired, [x(1) y(1)]);
+    err2 = get_distance(point_a_desired, [x(2) y(2)]);
     
     if (err1 < err2)
         x = x(1);
