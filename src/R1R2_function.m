@@ -1,5 +1,5 @@
 % This function calculates the distance between the aircraft and the SSR
-% (R1) and the distance between the aircraft and the receiver(R2) based on
+% (R1) and the distance between the aircraft and the receiver (R2) based on
 % the path difference (L), the receiver-SSR-arcraft angle (phi) and the
 % aircraft altitude (h)
 
