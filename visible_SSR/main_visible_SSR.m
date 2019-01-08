@@ -125,7 +125,7 @@ for isnr = 1 : length(SNR)
             [L, phi] = Lphi_calc( ssr_parameters, ssr_errors, t_errors, receiver, ssr, aircraft, flags, 1);
             [R1, R2] = R1R2_function(L, get_distance(ssr, receiver), phi, aircraft(3));
             if ~isempty(R1)
-                [x, y, ok] = coordR_function(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver, ssr, aircraft);
+                [x, y, ok] = get_coordinates_from_distances(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver(1:2), ssr(1:2), aircraft(1:2));
                 if ((ok) && ~isempty(x) && ~isempty(y))
                     error_R_BSSR_calculated_Ts = [error_R_BSSR_calculated_Ts; sqrt((aircraft(1) - x)^2 + (aircraft(2) - y)^2)];
                 end
@@ -136,7 +136,7 @@ for isnr = 1 : length(SNR)
             [L, phi] = Lphi_calc( ssr_parameters, ssr_errors, t_errors, receiver, ssr, aircraft, flags, 1 );
             [R1, R2] = R1R2_function(L, get_distance(ssr, receiver), phi, aircraft(3));
             if ~isempty(R1)
-                [x, y, ok] = coordR_function(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver, ssr, aircraft);
+                [x, y, ok] = get_coordinates_from_distances(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver(1:2), ssr(1:2), aircraft(1:2));
                 if ((ok) && ~isempty(x) && ~isempty(y))
                     error_R_BSSR_known_Ts = [error_R_BSSR_known_Ts; sqrt((aircraft(1) - x)^2 + (aircraft(2) - y)^2)];
                 end
@@ -155,7 +155,7 @@ for isnr = 1 : length(SNR)
             [L, phi] = Lphi_calc( ssr_parameters, ssr_errors, t_errors, receiver, ssr, aircraft, flags, N );
             [R1, R2] = R1R2_function(L, get_distance(ssr, receiver), phi, aircraft(3));
             if ~isempty(R1)
-                [x, y, ok] = coordR_function(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver, ssr, aircraft);
+                [x, y, ok] = get_coordinates_from_distances(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver(1:2), ssr(1:2), aircraft(1:2));
                 if ((ok) && ~isempty(x) && ~isempty(y))
                     error_R_control_system = [error_R_control_system; sqrt((aircraft(1) - x)^2 + (aircraft(2) - y)^2)];
                 end

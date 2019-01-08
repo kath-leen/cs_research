@@ -120,7 +120,7 @@ for current_ref_aircraft_LMS = reference_aircraft_LMS
                 if isempty(R1)
                     continue;
                 end
-                [x, y, ok] = coordR_function(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver, ssr, aircraft);
+                [x, y, ok] = get_coordinates_from_distances(sqrt(R2^2 - aircraft(3)^2), sqrt(R1^2 - aircraft(3)^2), receiver(1:2), ssr(1:2), aircraft(1:2));
                 if ((~ok) || isempty(x) || isempty(y))
                     continue;
                 end
